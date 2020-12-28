@@ -18,6 +18,12 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
 
+<<<<<<< HEAD
+=======
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid
+@enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+>>>>>>> 8437e68cd68b52aebc6ad7ae82ad1b76d6b454b4
 
         <!-- icheck bootstrap -->
         <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
