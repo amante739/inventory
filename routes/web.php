@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,7 @@ Route::get('/new-forget', function () {
     return view('newForget');
 });
 */
+
 Route::get('/', function () {
     return view('welcome');
 });
