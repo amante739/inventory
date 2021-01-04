@@ -32,3 +32,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+/*Route::get('/user', function () {
+    return view('admin.users.index');
+});
+Route::get('/user', function () {
+    return view('admin.users.create');
+});*/
+//Route::get('/user', 'UsersController@index')->name('home');
+Route::resource('/users','UsersController');

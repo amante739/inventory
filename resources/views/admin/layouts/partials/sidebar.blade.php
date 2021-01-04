@@ -19,6 +19,7 @@
                         Overview
                     </p>
                 </a>
+
             </li>
             <li class="nav-item">
                 <a href="" class="nav-link {{ Request::segment(1) === 'admin-home'  ? 'active' : null }}">
@@ -27,7 +28,26 @@
                         Home
                     </p>
                 </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link {{ Request::segment(1) === 'user'  ? 'active' : null }}">
+                            <i class="far fa-arrow-circle-down nav-icon"></i>
+                            <p>
+                                User list
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.create') }}" class="nav-link {{ Request::segment(1) === 'user'  ? 'active' : null }}">
+                            <i class="far fa-arrow-circle-down nav-icon"></i>
+                            <p>
+                                User create
+                            </p>
+                        </a>
+                    </li>
+                </ul>
             </li>
+
         </ul>
     </li>
 
