@@ -32,6 +32,28 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('productIn', 'ProductController@productIn');
+Route::get('productInView', 'ProductController@productInView');
+
+Route::get('productOut', 'ProductController@productOut');
+Route::get('productOutView', 'ProductController@productOutView');
+
+Route::get('productOut', 'ProductController@productOut');
+Route::get('productOutView', 'ProductController@productOutView');
+
+Route::resource('units', 'UnitController');
+Route::resource('items', 'ItemController');
+Route::resource('stocks', 'StockController');
+Route::resource('damages', 'DamageController');
+Route::resource('locations', 'LocationController');
+Route::resource('suppliers', 'SupplierController');
+Route::resource('categories', 'CategoryController');
+Route::resource('requisitions', 'RequisitionController');
+Route::get('item-date-report', 'ReportController@itemDateReport');
+Route::get('daily-summary-report', 'ReportController@dailySummaryReport');
+
+
 /*Route::get('/user', function () {
     return view('admin.users.index');
 });
@@ -39,4 +61,4 @@ Route::get('/user', function () {
     return view('admin.users.create');
 });*/
 //Route::get('/user', 'UsersController@index')->name('home');
-Route::resource('/users','UsersController');
+Route::resource('/users', 'UsersController');

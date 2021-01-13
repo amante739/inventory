@@ -5,7 +5,7 @@
     <div class="col-12 col-md-12">
         <nav class="navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav">
-                <h1>Category</h1>
+                <h1>Categories</h1>
             </ul>
 
         </nav>
@@ -19,14 +19,10 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">List</h3>
-
-                        @can('category-create')
-                        <a href="{{ route('categories.create') }}">
-                            <button class="btn btn-success btn-sm float-right">
-                                Add New
-                            </button>
-                        </a>
-                        @endcan
+                        <button class="btn btn-success btn-sm float-right" data-toggle="modal"
+                            data-target=".bd-example-modal-lg">
+                            Add Category
+                        </button>
 
                     </div>
                     <div class="card-body">
@@ -52,52 +48,28 @@
                         @endif
 
 
-                        @can('category-list')
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Title</th>
-                                    <th>Parent</th>
-                                    <th>Status</th>
+                                    <th>SL</th>
+                                    <th>Category</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($cats as $key => $cat)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $cat->category_name }}</td>
-                                    <td>
-                                        @if($cat->catparent)
-                                        <h4 class="badge badge-warning">{{ $cat->catparent->category_name }}</h4>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($cat->category_status)
-                                        <h4 class="badge badge-success">Active</h4>
-                                        @else
-                                        <h4 class="badge badge-danger">Inactive</h4>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @can('category-edit')
-                                        <a class="btn" href="{{ route('categories.edit', $cat->id) }}">
+                                    <td>1</td>
+                                    <td></td>
+                                    <td><a class="btn" href="">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        @endcan
-
-                                        @can('category-delete')
-                                        <a class="btn" onclick="return confirm('Are you sure?')" href="{{ url('categoriesdelete', $cat->id) }}">
+                                        <a class="btn" onclick="return confirm('Are you sure?')" href="">
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                        @endcan
                                     </td>
                                 </tr>
-                                @endforeach
                             </tbody>
                         </table>
-                        @endcan
 
                     </div>
                 </div>
@@ -105,27 +77,32 @@
         </div>
     </div>
 </section>
-@endsection
-
-@section('extrajs')
-<script>
-    $(document).ready(function() {
-        $(".check").click(function() {
-            $("#menuselect").attr("disabled", "disabled");
-        });
-
-        $(".uncheck").click(function() {
-            $("#menuselect").removeAttr("disabled", "disabled");
-        });
-    });
-
-
-    $('input:radio[id="is_cat_1"]').change(function() {
-        $("#menuselect").prop('required', true);
-    });
-
-    $('input:radio[id="is_cat_2"]').change(function() {
-        $("#menuselect").removeAttr('required');
-    });
-</script>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('categories.store') }}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="category_name" class="col-sm-2 col-form-label">Item Category*</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="category_name" id="category_name" required class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success btn-sm" value="Save">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
