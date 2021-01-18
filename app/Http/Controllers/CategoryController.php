@@ -47,7 +47,7 @@ class CategoryController extends Controller
         Category::create([
             'category_name' => $request->input('category_name')
         ]);
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return redirect()->route('categories.index')->with('success', 'Category test successfully');
     }
 
     /**
@@ -70,6 +70,9 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
+
+       // echo "test";
+       // return view('admin.category.edit', compact('categories'));
     }
 
     /**
@@ -79,10 +82,23 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+        //   'title' => 'required',
+            'category_name' => 'required',
+        ]);
+        //$category->update($request->all());
+        $category = Category::find($id);
+      //  $category->category_name =  $request->get('category_name');
+        $category->update(['category_name' => $request->input('category_name')]);
+       // $category->save();
+        return redirect()->route('categories.index')->with('success', 'Category Updated successfully');
+
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -92,6 +108,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+      //  $category->delete();
+
+      //  return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+
         //
     }
 }

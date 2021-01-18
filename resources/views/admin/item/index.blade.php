@@ -61,14 +61,15 @@
                                 @foreach ($items as $key => $item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->category_name }}</td>
+                                    <td>{{ $item->category_name }}{{ $item->categories->category_name}}</td>
                                     <td>{{ $item->item_code }}</td>
                                     <td>{{ $item->item_name }}</td>
-                                    <td>{{ $item->unit_name }}</td>
+                                    <td>{{ $item->unit->unit_name }}</td>
                                     <td>
-                                        <a class="btn">
+                                        <a class="btn" href="{{ route('items.edit',$item->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
+
                                         <a class="btn" onclick="return confirm('Are you sure?')" href="">
                                             <i class="fas fa-trash"></i>
                                         </a>

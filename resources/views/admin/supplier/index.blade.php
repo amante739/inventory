@@ -68,7 +68,7 @@
                                     <td>{{ $supplier->supplier_phone }}</td>
                                     <td>{{ $supplier->supplier_cell_phone }}</td>
                                     <td>
-                                        <a class="btn">
+                                        <a class="btn" href="{{ route('suppliers.edit',$supplier->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <a class="btn" onclick="return confirm('Are you sure?')" href="">

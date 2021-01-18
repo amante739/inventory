@@ -14,6 +14,16 @@ class Item extends Model
 
     public function categories()
     {
-        return BelongsTo('')
+        return $this->belongsTo('App\Category','category_id','id');
+        //('App\Comment', 'foreign_key');
+        //return $this->hasMany(Categories::class);
+        //Categories
+    }
+    public function unit()
+    {
+        return $this->belongsTo('App\Unit','item_unit_id','id');
+        //('App\Comment', 'foreign_key');
+        //return $this->hasMany(Categories::class);
+        //Categories
     }
 }

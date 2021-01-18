@@ -74,9 +74,12 @@ class SupplierController extends Controller
      * @param  \App\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function edit(supplier $supplier)
+    public function edit($id)
     {
         //
+        $suppliers = Supplier::all();
+        $suppliers=$suppliers->find($id);
+        return view('admin.supplier.edit', compact('suppliers'));
     }
 
     /**
@@ -86,9 +89,28 @@ class SupplierController extends Controller
      * @param  \App\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, supplier $supplier)
+    public function update(Request $request, $id)
     {
         //
+        $supplier = supplier::find($id);
+
+        $validator = Validator::make(request()->all(), [
+            'supplier_name' => 'required|unique:suppliers,supplier_name',
+            'supplier_email' => 'required',
+            'supplier_phone' => 'required',
+            'supplier_cell_phone' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $supplier->Update([
+            'supplier_name' => $request->input('supplier_name'),
+            'supplier_email' => $request->input('supplier_email'),
+            'supplier_phone' => $request->input('supplier_phone'),
+            'supplier_cell_phone' => $request->input('supplier_cell_phone'),
+            'supplier_address' => $request->input('supplier_address')
+        ]);
+        return redirect()->route('suppliers.index')->with('success', 'Supplier Updated successfully');
     }
 
     /**

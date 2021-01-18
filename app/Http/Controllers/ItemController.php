@@ -18,6 +18,7 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::all();
+
         $categories = Category::all();
         $units = Unit::all();
         return view('admin.item.index', compact(['items', 'categories', 'units']));
@@ -79,9 +80,20 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit(Item $item)
+    public function edit($id)
     {
+        $items=Item::all();
+        $categories = Category::all();
+        $units = Unit::all();
+
+      $items=$items->find($id);
+        //$user = User::with(['Organization', 'Profile'])->findOrFail(Auth::id());
+
+
         //
+      //  return view('item.edit',compact('product'));
+        return view('admin.item.edit', compact(['items','categories','units']));
+
     }
 
     /**
@@ -91,9 +103,20 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, $id)
     {
         //
+        $items = Item::find($id);
+        $items->update([
+            'item_name' => $request->input('item_name'),
+            'category_id' => $request->input('category_id'),
+            'item_code' => $request->input('item_code'),
+            'item_unit_id' => $request->input('item_unit_id')
+
+        ]);
+        return redirect()->route('items.index')->with('success', 'Item Updated successfully');
+
+        //return back();
     }
 
     /**

@@ -14,4 +14,10 @@ class Category extends Model
     protected $fillable = [
         'category_name'
     ];
+
+    public function item()
+    {
+        return $this->hasMany('App\Item','category_id','id');
+        //return $this->hasMany(Categories::class);
+    }
 }
