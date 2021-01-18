@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
+
 use App\Location;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return view('admin.location.index');
+        $locations = Location::all();
+        return view('admin.location.index', compact('locations'));
     }
 
     /**
@@ -35,7 +38,17 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'location_name' => 'required|unique:locations,location_name'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        Location::create([
+            'location_name' => $request->input('location_name'),
+            'location_status' => 1
+        ]);
+        return redirect()->route('locations.index')->with('success', 'Location created successfully');
     }
 
     /**

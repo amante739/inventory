@@ -1,34 +1,32 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<!-- Default box -->
 <section class="content-header">
     <div class="col-12 col-md-12">
         <nav class="navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
-                <h1>View Locations</h1>
+                <h1>Locations</h1>
             </ul>
 
         </nav>
     </div>
 </section>
-
 <section class="content">
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Create</h3>
-                        <a href="{{ route('users.create') }}">
-                            <button class="btn btn-success btn-sm float-right">
-                                Add Location
-                            </button>
-                        </a>
+                        <h3 class="card-title">List</h3>
+                        <button class="btn btn-success btn-sm float-right" data-toggle="modal"
+                            data-target=".add-location-modal">
+                            Add Location
+                        </button>
+
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
+
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <ul>
@@ -38,47 +36,51 @@
                             </ul>
                         </div>
                         @endif
+                        @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                        @endif
                         @if ($message = Session::get('success'))
                         <div class="alert alert-success">
                             <p>{{ $message }}</p>
                         </div>
                         @endif
 
-                        @can('user-list')
-                        <table class="table table-bordered table-sm">
+
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
+                                    <th>SL</th>
+                                    <th>Godown Name</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $key => $user)
+                                @foreach ($locations as $key => $locations)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $locations->location_name}}</td>
                                     <td>
-                                        @if(!empty($user->getRoleNames()))
-                                        @foreach($user->getRoleNames() as $value)
-                                        <label class="badge badge-success">{{ $value }}</label>
-                                        @endforeach
+                                        @if($locations->location_status)
+                                        <h4 class="badge badge-success">Active</h4>
+                                        @else
+                                        <h4 class="badge badge-danger">Inactive</h4>
                                         @endif
                                     </td>
                                     <td>
-                                        @can('user-edit')
-                                        <a class="btn" href="{{ route('users.edit', $user->id) }}">
+                                        <a class="btn">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        @endcan
-                                        <!-- <button type="button" class="btn btn-danger">Status</button> -->
+                                        <a class="btn" onclick="return confirm('Are you sure?')" href="">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        @endcan
 
                     </div>
                 </div>
@@ -86,4 +88,35 @@
         </div>
     </div>
 </section>
+
+{{-- Add Modal Location --}}
+<div class="modal fade add-location-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('locations.store') }}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="location_name" class="col-sm-2 col-form-label">Location*</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="location_name" id="location_name" required class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success btn-sm" value="Save">
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection

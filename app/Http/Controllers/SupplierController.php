@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -14,7 +15,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('admin.supplier.index');
+        $suppliers = Supplier::all();
+        return view('admin.supplier.index', compact('suppliers'));
     }
 
     /**
@@ -35,7 +37,24 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'supplier_name' => 'required|unique:suppliers,supplier_name',
+            'supplier_email' => 'required',
+            'supplier_phone' => 'required',
+            'supplier_cell_phone' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        Supplier::create([
+            'supplier_name' => $request->input('supplier_name'),
+            'supplier_email' => $request->input('supplier_email'),
+            'supplier_phone' => $request->input('supplier_phone'),
+            'supplier_cell_phone' => $request->input('supplier_cell_phone'),
+            'supplier_address' => $request->input('supplier_address'),
+            'supplier_status' => 1
+        ]);
+        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully');
     }
 
     /**

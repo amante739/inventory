@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UnitController extends Controller
 {
@@ -14,7 +16,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        return view('admin.unit.index');
+        $units = Unit::all();
+        return view('admin.unit.index', compact('units'));
     }
 
     /**
@@ -35,7 +38,17 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'unit_name' => 'required|unique:units,unit_name'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        Unit::create([
+            'unit_name' => $request->input('unit_name'),
+            'unit_status' => 1
+        ]);
+        return redirect()->route('units.index')->with('success', 'Unit created successfully');
     }
 
     /**

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Item;
+use App\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
@@ -14,7 +17,10 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('admin.item.index');
+        $items = Item::all();
+        $categories = Category::all();
+        $units = Unit::all();
+        return view('admin.item.index', compact(['items', 'categories', 'units']));
     }
 
     /**
@@ -24,7 +30,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('admin.item.create');
+        $categories = Category::all();
+        $units = Unit::all();
+        return view('admin.item.create', compact(['categories', 'units']));
     }
 
     /**
@@ -35,7 +43,23 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(request()->all(), [
+            'item_name' => 'required|unique:items,item_name',
+            'category_id' => 'required',
+            'item_code' => 'required',
+            'item_unit_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        Item::create([
+            'item_name' => $request->input('item_name'),
+            'category_id' => $request->input('category_id'),
+            'item_code' => $request->input('item_code'),
+            'item_unit_id' => $request->input('item_unit_id'),
+            'item_status' => 1
+        ]);
+        return redirect()->route('items.index')->with('success', 'Item created successfully');
     }
 
     /**
