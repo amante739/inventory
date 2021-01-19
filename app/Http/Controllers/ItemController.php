@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Item;
+use App\Stock;
 use App\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -53,12 +54,17 @@ class ItemController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        Item::create([
+        $item_id = Item::create([
             'item_name' => $request->input('item_name'),
             'category_id' => $request->input('category_id'),
             'item_code' => $request->input('item_code'),
             'item_unit_id' => $request->input('item_unit_id'),
             'item_status' => 1
+        ])->id;
+
+        Stock::create([
+            'item_id' => $item_id,
+            'stock' => 0
         ]);
         return redirect()->route('items.index')->with('success', 'Item created successfully');
     }
@@ -82,18 +88,17 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        $items=Item::all();
+        $items = Item::all();
         $categories = Category::all();
         $units = Unit::all();
 
-      $items=$items->find($id);
+        $items = $items->find($id);
         //$user = User::with(['Organization', 'Profile'])->findOrFail(Auth::id());
 
 
         //
-      //  return view('item.edit',compact('product'));
-        return view('admin.item.edit', compact(['items','categories','units']));
-
+        //  return view('item.edit',compact('product'));
+        return view('admin.item.edit', compact(['items', 'categories', 'units']));
     }
 
     /**

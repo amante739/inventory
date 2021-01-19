@@ -38,7 +38,7 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'supplier_name' => 'required|unique:suppliers,supplier_name',
+            'supplier_name' => 'required',
             'supplier_email' => 'required',
             'supplier_phone' => 'required',
             'supplier_cell_phone' => 'required'
@@ -78,7 +78,7 @@ class SupplierController extends Controller
     {
         //
         $suppliers = Supplier::all();
-        $suppliers=$suppliers->find($id);
+        $suppliers = $suppliers->find($id);
         return view('admin.supplier.edit', compact('suppliers'));
     }
 
@@ -93,9 +93,8 @@ class SupplierController extends Controller
     {
         //
         $supplier = supplier::find($id);
-
         $validator = Validator::make(request()->all(), [
-            'supplier_name' => 'required|unique:suppliers,supplier_name',
+            'supplier_name' => 'required',
             'supplier_email' => 'required',
             'supplier_phone' => 'required',
             'supplier_cell_phone' => 'required'
