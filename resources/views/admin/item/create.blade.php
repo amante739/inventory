@@ -38,8 +38,21 @@
                             <p>{{ $message }}</p>
                         </div>
                         @endif
-
-                        <table class="table ">
+                            <div class="form-group row">
+                                <label for="category_id" class="col-sm-2 col-form-label">Item Category*</label>
+                                <div class="col-sm-8">
+                                    <select name="category_id" id="category_id" required class="form-control">
+                                        <option value="">Select Category</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn btn-primary btn-m" id="add_more" value="Add More Item">
+                                </div>
+                            </div>
+                        <table class="table" id="data_table">
                             <thead>
                                 <tr>
                                     <th style="width: 10px">SL</th>
@@ -120,11 +133,34 @@
                                 </tr>
                             </tbody>
                         </table>
+                            <div class="form-group row">
+
+                                <div class="col-sm-6 d-flex justify-content-center">
+                                    <input type="submit" class="btn btn-success btn-m " value="Save">
+                                </div>
+                                <div class="col-sm-6 d-flex justify-content-center">
+                                    <button type="button" class="btn btn-danger btn-m" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </section>
+
+
+@endsection
+@section('extrajs')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Your jquery code
+            $("#add_more").click(function() {
+               // alert('JQuery is ready!');
+            });
+
+        });
+    </script>
 @endsection

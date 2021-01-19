@@ -90,6 +90,7 @@
             $('[data-toggle="tooltip"]').tooltip({
                 placement: 'top'
             });
+           // alert("test");
         });
 
         var url = window.location;

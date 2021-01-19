@@ -62,13 +62,16 @@
                                     <td>{{ $key+1 }}</td>
                                     <td>{{ $category->category_name}}</td>
                                     <td>
-                                        <a class="btn"  data-toggle="modal" data-target=".edit-cat-modal">
+                                        <a class="btn" href="{{ route('categories.edit',$category->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-
-                                        <a class="btn" onclick="return confirm('Are you sure?')" href="">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <form action="{{ route('categories.destroy',$category->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn" onclick="return confirm('Are you sure?')" >
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

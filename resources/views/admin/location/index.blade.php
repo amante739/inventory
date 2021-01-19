@@ -70,12 +70,16 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn">
+                                        <a class="btn" href="{{ route('locations.edit',$locations->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn" onclick="return confirm('Are you sure?')" href="">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <form action="{{ route('locations.destroy',$locations->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn" onclick="return confirm('Are you sure?')" >
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

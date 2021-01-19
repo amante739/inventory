@@ -69,10 +69,13 @@
                                         <a class="btn" href="{{ route('items.edit',$item->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-
-                                        <a class="btn" onclick="return confirm('Are you sure?')" href="">
+                                        <form action="{{ route('items.destroy',$item->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                        <button class="btn" onclick="return confirm('Are you sure?')" >
                                             <i class="fas fa-trash"></i>
-                                        </a>
+                                        </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

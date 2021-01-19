@@ -68,9 +68,12 @@ class LocationController extends Controller
      * @param  \App\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function edit(Location $location)
+    public function edit($id)
     {
-        //
+
+        $locations = Location::all();
+        $locations = $locations->find($id);
+        return view('admin.location.edit', compact('locations'));
     }
 
     /**
@@ -80,9 +83,20 @@ class LocationController extends Controller
      * @param  \App\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Location $location)
+    public function update(Request $request, $id)
     {
         //
+        $location=Location::find($id);
+        $validator = Validator::make(request()->all(), [
+            'location_name' => 'required|unique:locations,location_name'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $location->update([
+            'location_name' => $request->input('location_name')
+        ]);
+        return redirect()->route('locations.index')->with('success', 'Location Updated successfully');
     }
 
     /**
@@ -91,8 +105,12 @@ class LocationController extends Controller
      * @param  \App\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Location $location)
+    public function destroy($id)
     {
         //
+        $location = Location::find($id);
+        $location->delete();
+        return redirect()->route('locations.index')->with('success', 'Location Deleted successfully');
+
     }
 }

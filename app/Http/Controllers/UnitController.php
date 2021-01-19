@@ -68,9 +68,16 @@ class UnitController extends Controller
      * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Unit $unit)
+    public function edit($id)
     {
         //
+
+        $units = Unit::all();
+        $units =$units->find($id);
+      //  $suppliers = Supplier::all();
+      //  $suppliers = $suppliers->find($id);
+      //  return view('admin.supplier.edit', compact('suppliers'));
+        return view('admin.unit.edit', compact(['units']));
     }
 
     /**
@@ -80,9 +87,20 @@ class UnitController extends Controller
      * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Unit $unit)
+    public function update(Request $request, $id)
     {
         //
+        $units=Unit::find($id);
+        $validator = Validator::make(request()->all(), [
+            'unit_name' => 'required|unique:units,unit_name'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $units->update([
+            'unit_name' => $request->input('unit_name')
+        ]);
+        return redirect()->route('units.index')->with('success', 'Unit updated successfully');
     }
 
     /**
@@ -91,8 +109,13 @@ class UnitController extends Controller
      * @param  \App\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Unit $unit)
+    public function destroy($id)
     {
         //
+
+        $units = Unit::find($id);
+        $units->delete();
+        return redirect()->route('units.index')->with('success', 'Unit Deleted successfully');
+
     }
 }
