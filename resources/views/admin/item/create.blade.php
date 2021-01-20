@@ -38,111 +38,78 @@
                             <p>{{ $message }}</p>
                         </div>
                         @endif
+                        <form action="{{ route('items.store') }}" method="post">
+                            @csrf
                             <div class="form-group row">
                                 <label for="category_id" class="col-sm-2 col-form-label">Item Category*</label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-2">
                                     <select name="category_id" id="category_id" required class="form-control">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn btn-primary btn-m" id="add_more" value="Add More Item">
-                                </div>
                             </div>
-                        <table class="table" id="data_table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">SL</th>
-                                    <th>Code</th>
-                                    <th>Item Name</th>
-                                    <th>Unit</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1.</td>
+                            <table class="table" id="data_table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">SL</th>
+                                        <th>Code</th>
+                                        <th>Item Name</th>
+                                        <th>Unit</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableDynamic">
+                                    <tr>
+                                        <td>1.</td>
 
-                                    <input type="hidden" id="t_1" data-type="productName" name="product_name[]"
-                                        class="t_name form-control">
+                                        <input type="hidden" id="t_1" required data-type="productName"
+                                            name="item_name[]" class="t_name form-control">
 
-                                    <td><input name="item_code[]" type="text" class="item_code form-control"
-                                            id="item_code_1" required=""></td>
-                                    <td>
-                                        <input name="item_name[]" type="text" class="item_name form-control"
-                                            id="item_name_1" required="">
-                                    </td>
-                                    <td>
-                                        <select name="item_unit[]" id="item_unit_1" class="item_unit form-control"
-                                            required="">
-                                            <option selected="" disabled="">Select</option>
-                                            <option value="28">Auns</option>
-                                            <option value="3">Bag</option>
-                                            <option value="33">Bandle </option>
-                                            <option value="13">Book</option>
-                                            <option value="22">Bottle</option>
-                                            <option value="11">Box</option>
-                                            <option value="19">Cane</option>
-                                            <option value="30">Cft</option>
-                                            <option value="27">Coil</option>
-                                            <option value="29">Coil/Mtr</option>
-                                            <option value="38">Cone</option>
-                                            <option value="26">Dozen</option>
-                                            <option value="36">Drum</option>
-                                            <option value="9">Feet</option>
-                                            <option value="23">Gallon</option>
-                                            <option value="21">Gm</option>
-                                            <option value="41">Item</option>
-                                            <option value="35">Jur</option>
-                                            <option value="2">Kg</option>
-                                            <option value="8">Kg/bag</option>
-                                            <option value="7">Lbs</option>
-                                            <option value="24">Ltr</option>
-                                            <option value="31">M3</option>
-                                            <option value="39">ML</option>
-                                            <option value="17">Mtr</option>
-                                            <option value="25">Onz</option>
-                                            <option value="16">Pair</option>
-                                            <option value="12">Pc</option>
-                                            <option value="1">Pcs</option>
-                                            <option value="5">Pkt</option>
-                                            <option value="40">Plate</option>
-                                            <option value="10">Rft</option>
-                                            <option value="14">Rft/Inch</option>
-                                            <option value="32">Rin</option>
-                                            <option value="20">Roll</option>
-                                            <option value="4">Set</option>
-                                            <option value="6">Sft</option>
-                                            <option value="15">Tin</option>
-                                            <option value="37">UNIT</option>
-                                            <option value="34">Y</option>
-                                            <option value="18">Yds</option>
-                                        </select>
-                                    </td>
-
-
-                                    <input type="hidden" id="tag_1" data-type="productName" name="group_name[]"
-                                        class="paname form-control">
-                                    <td>
-                                        <a href="javascript:void(0);" id="deleteRow_1"
-                                            class="deleteRow btn btn-danger btn-flat btn-sm">Delete</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                            <div class="form-group row">
-
-                                <div class="col-sm-6 d-flex justify-content-center">
-                                    <input type="submit" class="btn btn-success btn-m " value="Save">
-                                </div>
-                                <div class="col-sm-6 d-flex justify-content-center">
-                                    <button type="button" class="btn btn-danger btn-m" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-
+                                        <td><input name="item_code[]" required type="text"
+                                                class="item_code form-control" id="item_code_1" required=""></td>
+                                        <td>
+                                            <input name="item_name[]" type="text" required
+                                                class="item_name form-control" id="item_name_1" required="">
+                                        </td>
+                                        <td>
+                                            <select name="item_unit_id[]" id="item_unit_id_1"
+                                                class="item_unit_id form-control" required>
+                                                <option selected="" disabled="">Select</option>
+                                                @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}">{{ $unit->unit_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <input type="hidden" id="tag_1" data-type="productName" name="group_name[]"
+                                            class="paname form-control">
+                                        <td>
+                                            <a href="javascript:void(0);" id="deleteRow_1"
+                                                class="deleteRow btn btn-danger btn-flat btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 48%;border-top: medium none;" rowspan="6">
+                                            <br>
+                                            <a href="javascript:void(0);" id="addRow" style="margin-left: 45px;"
+                                                class="btn btn-info btn-flat btn-sm">Add Item</a>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <button type="submit" id="save" style="margin-left: 390px;"
+                                                class="btn btn-success btn-flat"
+                                                onclick="return checkadd();">Save</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -154,13 +121,48 @@
 
 @endsection
 @section('extrajs')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Your jquery code
-            $("#add_more").click(function() {
-               // alert('JQuery is ready!');
-            });
+<script>
+    var scntDiv = $('#tableDynamic');
+    var i = $('#tableDynamic tr').length + 1;
+    $('#addRow').on('click', function () {
+        $('<tr><td>' + i + '</td>\n\
+<td><input type="text" name="item_code[]" id="item_code_'+i+'" class="item_code form-control" required </td>\n\
+<td><input type="text" name="item_name[]" id="item_name_'+i+'" class="item_name form-control" required </td>\n\
+<td>\n\
+    <select id="item_unit_id_' + i + '" name="item_unit_id[]" class="item_unit_id form-control" required>\n\
+        <option selected disabled>Select</option>\n\
+        @foreach($units as $unit)\n\
+        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>\n\
+        @endforeach\n\
+    </select>\n\
+</td>\n\
+<td><a href="javascript:void(0);" id="deleteRow_' + i + '"  class="deleteRow btn btn-danger btn-flat btn-sm">Delete</a></td></tr>').appendTo(scntDiv);
+        i++;    
+        return false;
+    });
 
-        });
-    </script>
+    $(document).on("click", ".deleteRow", function (e) {
+        if ($('#tableDynamic tr').length > 1) {
+            var target = e.target;
+
+            var id_arr = $(this).attr('id');
+            var id = id_arr.split("_");
+            var element_id = id[id.length - 1];
+
+            $(target).closest('tr').remove();
+        } else {
+            //alert('One row should be present in table');
+        }
+    });
+
+    // function checkadd() {
+    //     var chk = confirm("Are you sure to add this record ?");
+    //     if (chk) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    //     ;
+    // }
+</script>
 @endsection
