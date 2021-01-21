@@ -54,18 +54,24 @@ class ItemController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $item_id = Item::create([
-            'item_name' => $request->input('item_name'),
-            'category_id' => $request->input('category_id'),
-            'item_code' => $request->input('item_code'),
-            'item_unit_id' => $request->input('item_unit_id'),
-            'item_status' => 1
-        ])->id;
 
-        Stock::create([
-            'item_id' => $item_id,
-            'stock' => 0
-        ]);
+        $item_names = $request->item_name;
+        $item_code = $request->item_code;
+        $item_unit_id = $request->item_unit_id;
+        foreach ($item_names as $key => $item_name) {
+            $item_id = Item::create([
+                'item_name' => $item_name,
+                'category_id' => $request->category_id,
+                'item_code' => $item_code[$key],
+                'item_unit_id' => $item_unit_id[$key],
+                'item_status' => 0
+            ])->id;
+
+            Stock::create([
+                'item_id' => $item_id,
+                'stock' => 0
+            ]);
+        }
         return redirect()->route('items.index')->with('success', 'Item created successfully');
     }
 

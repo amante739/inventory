@@ -46,7 +46,8 @@
                                     <select name="category_id" id="category_id" required class="form-control">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->category_name }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,27 +65,23 @@
                                 <tbody id="tableDynamic">
                                     <tr>
                                         <td>1.</td>
-
-                                        <input type="hidden" id="t_1" required data-type="productName"
-                                            name="item_name[]" class="t_name form-control">
-
-                                        <td><input name="item_code[]" required type="text"
-                                                class="item_code form-control" id="item_code_1" required=""></td>
+                                        <td>
+                                            <input name="item_code[]" required type="text"
+                                                class="item_code form-control" id="item_code_1" required="">
+                                        </td>
                                         <td>
                                             <input name="item_name[]" type="text" required
                                                 class="item_name form-control" id="item_name_1" required="">
                                         </td>
                                         <td>
                                             <select name="item_unit_id[]" id="item_unit_id_1"
-                                                class="item_unit_id form-control" required>
-                                                <option selected="" disabled="">Select</option>
+                                                class="item_unit_id form-control" required="">
+                                                <option value="">Select</option>
                                                 @foreach ($units as $unit)
                                                 <option value="{{ $unit->id }}">{{ $unit->unit_name}}</option>
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <input type="hidden" id="tag_1" data-type="productName" name="group_name[]"
-                                            class="paname form-control">
                                         <td>
                                             <a href="javascript:void(0);" id="deleteRow_1"
                                                 class="deleteRow btn btn-danger btn-flat btn-sm">Delete</a>
@@ -130,7 +127,7 @@
 <td><input type="text" name="item_name[]" id="item_name_'+i+'" class="item_name form-control" required </td>\n\
 <td>\n\
     <select id="item_unit_id_' + i + '" name="item_unit_id[]" class="item_unit_id form-control" required>\n\
-        <option selected disabled>Select</option>\n\
+        <option value="">Select</option>\n\
         @foreach($units as $unit)\n\
         <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>\n\
         @endforeach\n\

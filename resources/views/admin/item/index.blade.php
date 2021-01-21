@@ -72,9 +72,9 @@
                                         <form action="{{ route('items.destroy',$item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                        <button class="btn" onclick="return confirm('Are you sure?')" >
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                            <button class="btn" onclick="return confirm('Are you sure?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -106,7 +106,7 @@
                     <div class="form-group row">
                         <label for="item_name" class="col-sm-2 col-form-label">Item Name*</label>
                         <div class="col-sm-10">
-                            <input type="text" name="item_name" id="item_name" required class="form-control">
+                            <input type="text" name="item_name[]" id="item_name" required class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -123,13 +123,13 @@
                     <div class="form-group row">
                         <label for="item_code" class="col-sm-2 col-form-label">Item Code*</label>
                         <div class="col-sm-10">
-                            <input type="text" name="item_code" id="item_code" required class="form-control">
+                            <input type="text" name="item_code[]" id="item_code" required class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="item_unit_id" class="col-sm-2 col-form-label">Item Unit*</label>
                         <div class="col-sm-10">
-                            <select name="item_unit_id" id="item_unit_id" required class="form-control">
+                            <select name="item_unit_id[]" id="item_unit_id" required class="form-control">
                                 <option value="">Select Unit</option>
                                 @foreach ($units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
