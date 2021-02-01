@@ -34,8 +34,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('productIn', 'ProductController@productIn');
+Route::get('productInStore', 'ProductController@productInStore');
 Route::get('productInView', 'ProductController@productInView');
-
+Route::get('itemSearch', 'ItemController@searchItem');
 Route::get('productOut', 'ProductController@productOut');
 Route::get('productOutView', 'ProductController@productOutView');
 

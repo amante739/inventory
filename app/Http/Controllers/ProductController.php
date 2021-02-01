@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Inventory;
+use App\Location;
 use App\Product;
+use App\supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -19,7 +24,63 @@ class ProductController extends Controller
 
     public function productIn()
     {
-        return view('admin.product.productIn.create');
+        $suppliers=Supplier::all();
+        $locations=Location::all();
+        return view('admin.product.productIn.create',compact(['suppliers','locations']));
+
+    }
+    public function productInStore(Request $request)
+    {
+        $suppliers=Supplier::all();
+        $locations=Location::all();
+        $validator = Validator::make(request()->all(), [
+            'po_no' => 'required',
+            'po_date' => 'required',
+            'qc_no' => 'required',
+            'supplier_id' => 'required',
+            'quantity' => 'required',
+           // 'item_name'=>'required',
+          //  'item_id' => 'required',
+          //  'location_id' => 'required',
+            'challan_no' => 'required',
+            'delivered_place' => 'required',
+            'delivered_date' => 'required',
+            'received_by' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $item_names = $request->item_name;
+        $quantitys = $request->quantity;
+        $item_location_id = $request->item_location_id;
+        $product_name=$request->product_name;
+        //dd($item_location_id );
+      //  $podate=Carbon::createFromFormat('m/d/Y', $request->po_date)->format('Y-m-d');
+        foreach ($item_names as $key => $item_name) {
+           // dd($item_location_id[$key]);
+        //  dd(Carbon::createFromFormat('m/d/Y', $request->po_date)->format('Y-m-d'));
+           Inventory::create([
+               // 'item_name' => $item_name,
+
+                'po_no' => $request->po_no,
+                'po_date' =>$request->po_date,
+                'qc_no' => $request->qc_no,
+                'supplier_id' => $request->supplier_id,
+                'challan_no'=>$request->challan_no,
+                'delivered_place'=>$request->delivered_place,
+                'delivered_date'=>$request->delivered_date,
+                'received_by'=>$request->received_by,
+                'quantity' => $quantitys[$key],
+                'item_id' =>$product_name[$key],
+                'location_id' => $item_location_id[$key],
+                'transaction_id'=>Carbon::now()->format('YmdHis'),
+                'status' =>0
+            ]);
+
+
+        }
+        return view('admin.product.productIn.create',compact(['suppliers','locations']));
+
     }
     public function productInView()
     {

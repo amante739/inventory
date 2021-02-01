@@ -143,4 +143,31 @@ class ItemController extends Controller
         $items->delete();
         return redirect()->route('items.index')->with('success', 'Item Deleted successfully');
     }
+    public function searchItem( Request $request)
+    {
+
+
+           // $output="";
+           // $items=DB::table('Item')->where('item_name','LIKE','%'.$request->search."%")->get();
+            $items = Item::where('item_name','like', '%'.$request->term."%")->get();
+            return $items ;//response()->json($items);
+            //$query = User::where('name', 'LIKE', "%$term%");
+           // dd($items);
+           /* if($items) {
+                foreach ($items as $key => $item) {
+                    $output .= '<tr>' .
+                        '<td>' . $item->id . '</td>' .
+                        '<td>' . $item->item_name . '</td>' .
+
+                        '</tr>';
+                }*/
+              //  dd($output);
+                //return Response($output);
+                //toJson();
+                //return $items->toJson();
+
+          //  }
+
+    }
 }
+//6-10.30
