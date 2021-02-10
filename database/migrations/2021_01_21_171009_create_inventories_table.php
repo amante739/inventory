@@ -29,6 +29,8 @@ class CreateInventoriesTable extends Migration
             $table->string('delivered_date')->nullable();
             $table->string('status')->nullable();
             $table->string('received_by')->nullable();
+            $table->string('prepared_by')->nullable();
+            $table->string('approved_by')->nullable();
 
                 // $table->integer('item_id');
                 //            $table->integer('stock');

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Inventory;
 use App\Location;
 use App\Product;
+use App\Stock;
 use App\supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -40,8 +42,8 @@ class ProductController extends Controller
             'supplier_id' => 'required',
             'quantity' => 'required',
            // 'item_name'=>'required',
-          //  'item_id' => 'required',
-          //  'location_id' => 'required',
+            //'item_id' => 'required',
+           // 'location_id' => 'required',
             'challan_no' => 'required',
             'delivered_place' => 'required',
             'delivered_date' => 'required',
@@ -57,8 +59,6 @@ class ProductController extends Controller
         //dd($item_location_id );
       //  $podate=Carbon::createFromFormat('m/d/Y', $request->po_date)->format('Y-m-d');
         foreach ($item_names as $key => $item_name) {
-           // dd($item_location_id[$key]);
-        //  dd(Carbon::createFromFormat('m/d/Y', $request->po_date)->format('Y-m-d'));
            Inventory::create([
                // 'item_name' => $item_name,
 
@@ -74,8 +74,35 @@ class ProductController extends Controller
                 'item_id' =>$product_name[$key],
                 'location_id' => $item_location_id[$key],
                 'transaction_id'=>Carbon::now()->format('YmdHis'),
+                'prepared_by'=>$request->prepared_by,
                 'status' =>0
             ]);
+            $stocks = Stock::where('item_id','like', '%'.$product_name[$key]."%")->get();
+
+
+
+                //dd(empty($stocks));
+              //  dd($stocks);
+            if(count($stocks)>0) {
+                foreach ($stocks as $stock) {
+
+
+                    $qty = $stock->stock + $quantitys[$key];
+                    $stock->update([
+
+                        'stock' => $qty,
+                        'item_id' => $product_name[$key]
+
+                    ]);
+
+                }
+            }else {
+                Stock::create([
+                    'item_id' => $product_name[$key],
+                    'stock' => $quantitys[$key]
+                ]);
+            }
+
 
 
         }
@@ -84,7 +111,14 @@ class ProductController extends Controller
     }
     public function productInView()
     {
-        return view('admin.product.productIn.index');
+       // $inventories=Inventory::all();
+        $inventories=DB::table('inventories')
+            ->leftjoin('items','items.id','=','inventories.item_id')
+           // ->selectRaw('COUNT(*) as nbr', 'products.*')
+            //->groupBy('products.id')
+            ->get();
+
+        return view('admin.product.productIn.index',compact(['inventories']));
     }
 
 

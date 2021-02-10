@@ -33,6 +33,7 @@
                         </div>
                         @endif
                         @if ($message = Session::get('success'))
+
                         <div class="alert alert-success">
                             <p>{{ $message }}</p>
                         </div>
@@ -41,7 +42,7 @@
                                 @csrf
                             @method('GET')
                                 <div class="form-group row">
-                                    <label for="category_id" class="col-sm-3 col-form-label">Purchase Order*</label>
+                                    <label for="category_id" class="col-sm-3 col-form-label">Purchase Order*  </label>
 
                                     <label for="category_id" class="col-sm-3 col-form-label">Purchase Date*</label>
 
@@ -54,6 +55,9 @@
 
                                     <div class="col-sm-3">
                                         <input type="text" id="po_no" required="" name="po_no" class="po_no form-control">
+                                        <input type="hidden" id="prepared_by" required="" value="{{auth()->user()->id}}" name="prepared_by" class="prepared_by form-control">
+
+
                                     </div>
 
                                     <div class="col-sm-3">

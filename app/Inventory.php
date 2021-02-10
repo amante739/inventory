@@ -19,7 +19,10 @@ class Inventory extends Model
         'delivered_place',
         'delivered_date',
         'received_by',
-        'status'
+        'status',
+        'prepared_by',
+        'approved_by'
     ];
+
     //
 }
